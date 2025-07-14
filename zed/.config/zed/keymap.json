@@ -7,23 +7,22 @@
 // from the command palette.
 [
   {
-    "context": "Workspace",
-    "bindings": {
-      "space space": "file_finder::Toggle",
-      "space e": "project_panel::ToggleFocus",
-      "space g": "git_panel::ToggleFocus"
-    }
-  },
-  {
     "context": "ProjectPanel",
     "bindings": {
-      "space e": "workspace::CloseActiveDock"
+      "space e": "workspace::CloseActiveDock",
+      "ctrl-a": "project_panel::NewFile",
+      "ctrl-d": "project_panel::RemoveFromProject",
+      "ctrl-r": "project_panel::Rename"
     }
   },
   {
     "context": "GitPanel",
     "bindings": {
-      "space g": "workspace::CloseActiveDock"
+      "space g": "workspace::CloseActiveDock",
+      "ctrl-k": "git_panel::FocusEditor",
+      "ctrl-p": "git::Push",
+      "ctrl-u": "git::Pull",
+      "ctrl-f": "git::Fetch"
     }
   },
   {
@@ -32,6 +31,21 @@
       "j k": "vim::SwitchToNormalMode",
       "k j": "vim::SwitchToNormalMode",
       "ctrl-s": "workspace::Save"
+    }
+  },
+  {
+    "context": "Editor && vim_mode != insert && !menu",
+    "bindings": {
+      "space space": "file_finder::Toggle",
+      "space e": "project_panel::ToggleFocus"
+    }
+  },
+  {
+    "context": "Editor && (vim_mode == normal || vim_mode == visual) && !menu",
+    "bindings": {
+      "shift-j": "editor::MoveLineDown",
+      "space g": "git_panel::ToggleFocus",
+      "shift-k": "editor::MoveLineUp"
     }
   }
 ]
