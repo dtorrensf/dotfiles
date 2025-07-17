@@ -11,6 +11,7 @@
     "bindings": {
       "space e": "workspace::CloseActiveDock",
       "ctrl-a": "project_panel::NewFile",
+      "ctrl-f": "project_panel::NewDirectory",
       "ctrl-d": "project_panel::RemoveFromProject",
       "ctrl-r": "project_panel::Rename"
     }
@@ -45,7 +46,10 @@
     "bindings": {
       "shift-j": "editor::MoveLineDown",
       "space g": "git_panel::ToggleFocus",
-      "shift-k": "editor::MoveLineUp"
+      "shift-k": "editor::MoveLineUp",
+      "space v": "pane::SplitVertical",
+      "space h": "pane::SplitHorizontal",
+      "ctrl-º": "pane::CloseActiveItem"
     }
   }
 ]
