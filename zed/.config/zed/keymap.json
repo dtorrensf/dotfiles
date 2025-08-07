@@ -37,13 +37,13 @@
   {
     "context": "(Editor || Workspace) && vim_mode != insert && !menu",
     "bindings": {
-      "space space": "file_finder::Toggle",
       "space e": "project_panel::ToggleFocus"
     }
   },
   {
     "context": "Editor && (vim_mode == normal || vim_mode == visual) && !menu",
     "bindings": {
+      "space space": "file_finder::Toggle",
       "ctrl-p": "git::Push",
       "ctrl-u": "git::Pull",
       "ctrl-f": "git::Fetch",
