@@ -52,6 +52,9 @@
       "shift-k": "editor::MoveLineUp",
       "space v": "pane::SplitVertical",
       "space h": "pane::SplitHorizontal",
+      "space b d": "pane::CloseActiveItem",
+      "space b a": "pane::CloseAllItems",
+      "space b o": "pane::CloseInactiveItems",
       "ctrl-º": "pane::CloseActiveItem"
     }
   }
