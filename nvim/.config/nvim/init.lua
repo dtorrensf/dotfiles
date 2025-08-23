@@ -22,8 +22,21 @@ vim.opt.rtp:prepend(lazypath)
 -- This is also a good place to setup other settings (vim.opt)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
-vim.opt.relativenumber = true   
 
+vim.opt.relativenumber = true
+
+-- Keymaps personalizados
+local map = vim.keymap.set
+map('n', '<C-s>', ':w<CR>', { desc = 'Guardar archivo' })
+map('n', '<leader>bd', ':bd<CR>', { desc = 'Cerrar buffer' })
+map('n', '<leader>e', ':Oil<CR>', { desc = 'Abrir Oil (explorador)' })
+map('n', '<C-h>', '<C-w>h', { desc = 'Mover a la ventana izquierda' })
+map('n', '<C-j>', '<C-w>j', { desc = 'Mover a la ventana abajo' })
+map('n', '<C-k>', '<C-w>k', { desc = 'Mover a la ventana arriba' })
+map('n', '<C-l>', '<C-w>l', { desc = 'Mover a la ventana derecha' })
+map('n', '<leader>db', function()
+  require('dap').toggle_breakpoint()
+end, { desc = 'DAP: Toggle breakpoint' })
 
 
 -- Setup lazy.nvim
@@ -36,9 +49,20 @@ require("lazy").setup({
   lazy = false,
   priority = 1000,
   opts = {
-	transparent= true
+  transparent= true
   }
   },
+    -- Telescope (buscador de archivos)
+    {
+      "nvim-telescope/telescope.nvim",
+      dependencies = { "nvim-lua/plenary.nvim" },
+      config = function()
+        require("telescope").setup{}
+        local map = vim.keymap.set
+        map('n', '<leader>ff', require('telescope.builtin').find_files, { desc = 'Buscar archivos' })
+        map('n', '<leader>fg', require('telescope.builtin').live_grep, { desc = 'Buscar texto' })
+      end,
+    },
   -- Oil plugin
   {
   'stevearc/oil.nvim',
@@ -55,6 +79,118 @@ require("lazy").setup({
 {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
+    opts = {
+      ensure_installed = { "go", "lua", "vim", "bash" },
+      highlight = { enable = true },
+    },
+    -- Mason for managing LSP servers
+    {
+      "williamboman/mason.nvim",
+      config = function()
+        require("mason").setup()
+      end,
+    },
+    -- Mason LSP integration
+    {
+      "williamboman/mason-lspconfig.nvim",
+      dependencies = { "williamboman/mason.nvim" },
+      config = function()
+        require("mason-lspconfig").setup({
+          ensure_installed = { "gopls" },
+        })
+      end,
+    },
+    -- LSP config (uses mason-lspconfig)
+    {
+      "neovim/nvim-lspconfig",
+      config = function()
+        local lspconfig = require("lspconfig")
+        lspconfig.gopls.setup({})
+      end,
+    },
+    -- Autocompletion
+    {
+      "hrsh7th/nvim-cmp",
+      event = "InsertEnter",
+      dependencies = {
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-path",
+        "hrsh7th/cmp-cmdline",
+        "L3MON4D3/LuaSnip",
+      },
+      config = function()
+        local cmp = require("cmp")
+        cmp.setup({
+          snippet = {
+            expand = function(args)
+              require("luasnip").lsp_expand(args.body)
+            end,
+          },
+          sources = {
+            { name = "nvim_lsp" },
+            { name = "buffer" },
+            { name = "path" },
+          },
+          mapping = cmp.mapping.preset.insert({
+            ['<C-Space>'] = cmp.mapping.complete(),
+            ['<CR>'] = cmp.mapping.confirm({ select = true }),
+          }),
+        })
+      end,
+    },
+    -- DAP (Debug Adapter Protocol) para Go
+    {
+      "mfussenegger/nvim-dap",
+      config = function()
+        local dap = require("dap")
+        dap.adapters.go = {
+          type = "server",
+          port = "${port}",
+          executable = {
+            command = "dlv",
+            args = { "dap", "--listen", "127.0.0.1:${port}" },
+          },
+        }
+        dap.configurations.go = {
+          {
+            type = "go",
+            name = "Debug",
+            request = "launch",
+            program = "${file}",
+          },
+        }
+      end,
+    },
+    -- Mason para instalar Delve (dlv)
+    {
+      "jay-babu/mason-nvim-dap.nvim",
+      dependencies = { "williamboman/mason.nvim", "mfussenegger/nvim-dap" },
+      config = function()
+        require("mason-nvim-dap").setup({
+          ensure_installed = { "delve" },
+        })
+      end,
+    },
+    -- Interfaz visual para DAP
+    {
+      "rcarriga/nvim-dap-ui",
+      dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+      config = function()
+        local dap = require("dap")
+        local dapui = require("dapui")
+        dapui.setup()
+        dap.listeners.after.event_initialized["dapui_config"] = function()
+          dapui.open()
+        end
+        dap.listeners.before.event_terminated["dapui_config"] = function()
+          dapui.close()
+        end
+        dap.listeners.before.event_exited["dapui_config"] = function()
+          dapui.close()
+        end
+      end,
+    },
 },
 {
     "kylechui/nvim-surround",
