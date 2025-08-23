@@ -984,17 +984,17 @@
           },
           "function": {
             "color": "#EBC88D",
-            "font_style": null,
+            "font_style": "italic",
             "font_weight": null
           },
           "function.definition": {
             "color": "#FFFFFF",
-            "font_style": null,
+            "font_style": "italic",
             "font_weight": 600
           },
           "function.special": {
             "color": "#A8CC7C",
-            "font_style": null,
+            "font_style": "italic",
             "font_weight": null
           },
           "hint": {
