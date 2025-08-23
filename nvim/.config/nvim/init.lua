@@ -38,6 +38,11 @@ map('n', '<leader>db', function()
   require('dap').toggle_breakpoint()
 end, { desc = 'DAP: Toggle breakpoint' })
 
+-- Mappings para salir de modo insert con combinaciones rápidas
+for _, keys in ipairs({"jk", "kj", "jj", "kk"}) do
+  map('i', keys, '<Esc>', { desc = 'Salir a modo normal', noremap = true })
+end
+
 
 -- Setup lazy.nvim
 require("lazy").setup({
