@@ -127,11 +127,6 @@
         {
             "wmClass": "update-manager",
             "mode": "float"
-        },
-        {
-            "wmClass": "kitty",
-            "wmId": 1815385487,
-            "mode": "float"
         }
     ]
 }
