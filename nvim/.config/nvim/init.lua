@@ -52,6 +52,9 @@ map('n', '<leader>db', function()
     require('dap').toggle_breakpoint()
 end, { desc = 'DAP: Toggle breakpoint' })
 
+-- Filetype detection: treat .yuck files as 'yuck'
+-- Removed explicit yuck filetype detection (handled by filetype plugins or treesitter)
+
 -- Mappings para salir de modo insert con combinaciones rápidas
 for _, keys in ipairs({ "jk", "kj", "jj", "kk" }) do
     map('i', keys, '<Esc>', { desc = 'Salir a modo normal', noremap = true })
@@ -103,7 +106,7 @@ require("lazy").setup({
             "nvim-treesitter/nvim-treesitter",
             build = ":TSUpdate",
             opts = {
-                ensure_installed = { "go", "lua", "vim", "bash" },
+                ensure_installed = { "go", "lua", "vim", "bash", "markdown", "markdown_inline" },
                 highlight = { enable = true },
             },
             -- Mason for managing LSP servers
@@ -119,8 +122,8 @@ require("lazy").setup({
                 dependencies = { "williamboman/mason.nvim" },
                 config = function()
                     require("mason-lspconfig").setup({
-                        ensure_installed = { "gopls" },
-                    })
+                            ensure_installed = { "gopls", "marksman" },
+                        })
                 end,
             },
             -- LSP config (uses mason-lspconfig)
@@ -129,6 +132,10 @@ require("lazy").setup({
                 config = function()
                     local lspconfig = require("lspconfig")
                     lspconfig.gopls.setup({})
+                        -- Configure marksman for Markdown if available
+                        if lspconfig.marksman then
+                            lspconfig.marksman.setup({})
+                        end
                 end,
             },
             -- Autocompletion
