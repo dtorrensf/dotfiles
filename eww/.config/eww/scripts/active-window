@@ -1,17 +1,9 @@
 #!/bin/bash
 
-# Si no hay ventana activa, devolver valores por defecto
-if ! hyprctl activewindow &>/dev/null; then
-    echo '{"icon": "󰣆", "title": "Desktop"}'
-    exit 0
-fi
-
-# Obtener información de la ventana activa
-window_info=$(hyprctl activewindow -j)
-
-# Extraer el título y la clase (usada para el icono)
-title=$(echo "$window_info" | jq -r .title)
-class=$(echo "$window_info" | jq -r .class)
+# Función para obtener información del workspace activo
+get_active_workspace() {
+    hyprctl activeworkspace -j | jq -r '.id // "1"'
+}
 
 # Función para obtener el icono basado en la clase de la ventana
 get_icon() {
@@ -25,10 +17,39 @@ get_icon() {
         "thunar"|"dolphin")
             echo "";;
         *)
-            echo "󰣆";; # Icono por defecto
+            [ "$title" = "null" ] && echo "󱂬" || echo "󰣆";;
     esac
 }
 
-# Imprimir el resultado en formato que eww puede parsear
-icon=$(get_icon)
-echo "{\"icon\": \"$icon\", \"title\": \"$title\"}"
+# Función para obtener información de la ventana activa
+get_window_info() {
+    local window_info
+    window_info=$(hyprctl activewindow -j 2>/dev/null)
+    
+    # Si no hay ventana activa o el comando falla
+    if [ $? -ne 0 ] || [ "$window_info" = "null" ] || [ -z "$window_info" ]; then
+        local workspace
+        workspace=$(get_active_workspace)
+        echo "{\"icon\": \"󱂬\", \"title\": \"Workspace $workspace\"}"
+        return
+    fi
+
+    # Si hay una ventana activa, procesar su información
+    local title
+    local class
+    title=$(echo "$window_info" | jq -r '.title // "Unknown"')
+    class=$(echo "$window_info" | jq -r '.class // "unknown"')
+
+    # Si el título es null o vacío, usar un valor por defecto
+    if [ "$title" = "null" ] || [ -z "$title" ]; then
+        title="Workspace $(get_active_workspace)"
+    fi
+
+    # Obtener el icono y retornar la información
+    local icon
+    icon=$(get_icon)
+    echo "{\"icon\": \"$icon\", \"title\": \"$title\"}"
+}
+
+# Ejecutar la función principal
+get_window_info
