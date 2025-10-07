@@ -1,0 +1,45 @@
+* {
+  all: unset; // Unsets everything so you can style everything from scratch
+  font-family: 'FiraCode Nerd Font';
+  font-weight: bold;
+}
+
+.slashed-container {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 5px 15px 15px 5px;
+    margin-left: 5px;
+    padding: 4px;
+}
+
+.slashed-container-left {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 15px 5px 5px 15px;
+    margin-left: 2px;
+    padding: 5px;
+    font-size: 14px;  // Ajustar tamaño para los círculos
+    color: rgba(255, 255, 255, 0.6);  // Color opaco para círculos inactivos
+    
+    label {
+        margin: 0 2px;  // Espaciado entre círculos
+    }
+}
+
+.opaque-container {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
+    margin: 0 5px;
+    padding: 4px 10px;
+}
+
+// Estilos para el título de la ventana activa
+.window-icon {
+    font-family: 'FiraCode Nerd Font';
+    font-size: 16px;
+    color: #ffffff;
+    margin-right: 8px;
+}
+
+.window-title {
+    color: #ffffff;
+    font-size: 14px;
+}

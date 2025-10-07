@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Si no hay ventana activa, devolver valores por defecto
+if ! hyprctl activewindow &>/dev/null; then
+    echo '{"icon": "󰣆", "title": "Desktop"}'
+    exit 0
+fi
+
+# Obtener información de la ventana activa
+window_info=$(hyprctl activewindow -j)
+
+# Extraer el título y la clase (usada para el icono)
+title=$(echo "$window_info" | jq -r .title)
+class=$(echo "$window_info" | jq -r .class)
+
+# Función para obtener el icono basado en la clase de la ventana
+get_icon() {
+    case $class in
+        "firefox")
+            echo "󰈹";;
+        "code")
+            echo "";;
+        "kitty"|"alacritty"|"terminal")
+            echo "";;
+        "thunar"|"dolphin")
+            echo "";;
+        *)
+            echo "󰣆";; # Icono por defecto
+    esac
+}
+
+# Imprimir el resultado en formato que eww puede parsear
+icon=$(get_icon)
+echo "{\"icon\": \"$icon\", \"title\": \"$title\"}"

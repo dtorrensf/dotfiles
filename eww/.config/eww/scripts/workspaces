@@ -1,0 +1,25 @@
+#!/bin/bash
+# Script to list workspaces and update eww widgets accordingly
+
+# Obtener el workspace activo
+get_active_workspace() {
+    hyprctl activewindow -j | jq '.workspace.id'
+}
+
+# Obtener los números de workspace activos y mostrarlos como círculos
+get_workspaces() {
+    active=$(get_active_workspace)
+    workspaces=$(hyprctl workspaces | grep "^workspace ID" | awk '{print $3}' | sort -n)
+    
+    for ws in $workspaces; do
+        if [ "$ws" = "$active" ]; then
+            echo -n "● "  # Círculo sólido para workspace activo
+        else
+            echo -n "○ "  # Círculo hueco para workspace inactivo
+        fi
+    done
+    echo  # Nueva línea final
+}
+
+# Ejecutar y mostrar los workspaces
+get_workspaces

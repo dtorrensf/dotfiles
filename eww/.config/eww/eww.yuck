@@ -1,0 +1,65 @@
+
+;; Variables/Polls
+(defpoll time :interval "10s"
+  "date '+%H:%M %b %d, %Y'")
+
+(defpoll workspaces :interval "1s"
+  "scripts/workspaces")
+
+(defpoll active-window :interval "250ms"
+  :initial "{\"icon\": \"󰣆\", \"title\": \"\"}"  ; Valor inicial mientras carga
+  "scripts/active-window")
+
+;; Widgets
+(defwidget workspace []
+  (box :class "slashed-container-left" 
+       :orientation "h" 
+       :space-evenly false 
+       :halign "start"
+    (label :text workspaces)))
+
+(defwidget window-title []
+  (box :class "opaque-container"
+       :orientation "h"
+       :space-evenly false
+       :halign "center"
+       :width 300
+    (box :space-evenly false 
+         :spacing 8
+         :halign "center"
+         :valign "center"
+      (label :class "window-icon" 
+             :text "${active-window.icon}" 
+             :valign "center")
+      (label :class "window-title" 
+             :text "${active-window.title}" 
+             :limit-width 40
+             :valign "center"))))
+
+(defwidget sidestuff []
+  (box :class "slashed-container"
+       :orientation "h"
+       :space-evenly false
+       :halign "end"
+    (label :text time)))
+
+;; Windows
+(defwindow bar
+           :monitor 1
+           :exclusive true
+           :geometry (geometry :x "0%"
+                               :y "3px"
+                               :width "98%"
+                               :height "20px"
+                               :anchor "top center")
+           :stacking "fg"
+           :reserve (struts :distance "10px" :side "top")
+           :windowtype "dock"
+           :wm-ignore false
+  (centerbox :orientation "h"
+    (workspace)     ; Izquierda
+    (window-title) ; Centro (título de ventana activa)
+    (sidestuff)))  ; Derecha
+
+
+
