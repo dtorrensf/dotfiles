@@ -10,12 +10,14 @@ get_icon() {
     case $class in
         "firefox")
             echo "󰈹";;
-        "code")
-            echo "";;
-        "kitty"|"alacritty"|"terminal")
-            echo "";;
-        "thunar"|"dolphin")
-            echo "";;
+        "Brave-browser"|"brave-browser")
+            echo "󰇧";;
+        "code"|"nvim")
+            echo "󰈙";;
+        "kitty"|"alacritty"|"terminal"|"xterm"|"foot")
+            echo "󰆍";;
+        "thunar"|"dolphin"|"nemo")
+            echo "󰉋";;
         *)
             [ "$title" = "null" ] && echo "󱂬" || echo "󰣆";;
     esac

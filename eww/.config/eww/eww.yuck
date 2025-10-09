@@ -14,8 +14,9 @@
 (defwidget workspace []
   (box :class "slashed-container-left" 
        :orientation "h" 
-       :space-evenly false 
+       :space-evenly true
        :halign "start"
+       :width 300
     (label :text workspaces)))
 
 (defwidget window-title []
@@ -23,7 +24,7 @@
        :orientation "h"
        :space-evenly true
        :halign "center"
-       :width 300
+       :width 500
     (box :space-evenly false 
          :spacing 8
          :halign "center"
@@ -39,8 +40,9 @@
 (defwidget sidestuff []
   (box :class "slashed-container"
        :orientation "h"
-       :space-evenly false
+       :space-evenly true
        :halign "end"
+       :width 300
     (label :text time)))
 
 ;; Windows
