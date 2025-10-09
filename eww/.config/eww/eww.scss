@@ -2,6 +2,7 @@
   all: unset; // Unsets everything so you can style everything from scratch
   font-family: 'FiraCode Nerd Font';
   font-weight: bold;
+  font-size: 10px
 }
 
 .slashed-container {
@@ -27,19 +28,14 @@
 .opaque-container {
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 5px;
-    margin: 0 5px;
-    padding: 4px 10px;
 }
 
 // Estilos para el título de la ventana activa
 .window-icon {
     font-family: 'FiraCode Nerd Font';
-    font-size: 16px;
     color: #ffffff;
-    margin-right: 8px;
 }
 
 .window-title {
     color: #ffffff;
-    font-size: 14px;
 }

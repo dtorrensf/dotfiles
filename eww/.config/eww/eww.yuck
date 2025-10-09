@@ -21,7 +21,7 @@
 (defwidget window-title []
   (box :class "opaque-container"
        :orientation "h"
-       :space-evenly false
+       :space-evenly true
        :halign "center"
        :width 300
     (box :space-evenly false 
