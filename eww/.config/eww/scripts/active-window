@@ -12,7 +12,7 @@ get_icon() {
             echo "󰈹";;
         "Brave-browser"|"brave-browser")
             echo "󰇧";;
-        "code"|"nvim")
+        "Visual Studio"|"nvim" | "IntelliJ IDEA")
             echo "󰈙";;
         "kitty"|"alacritty"|"terminal"|"xterm"|"foot")
             echo "󰆍";;
