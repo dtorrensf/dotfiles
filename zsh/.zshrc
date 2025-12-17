@@ -128,5 +128,16 @@ function y() {
 	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
 	rm -f -- "$tmp"
 }
+# Brew config
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 bindkey -v
+# zoxide config
+eval "$(zoxide init zsh)"
+
+# pnpm
+export PNPM_HOME="/home/dtf/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
